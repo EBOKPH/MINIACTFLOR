@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userControllers');
+const auth = require('../auth')
 
 router.post('/checkEmail', (req, res) => {
 	userController.checkEmailExists(req.body)
@@ -24,6 +25,11 @@ router.post('/details', (req, res) =>{
 	//provide the user's ID for the getProfile controller method
 	userController.getProfile({userId: req.body.id})
 	.then(resultFromController => res.send(resultFromController))
+});
+
+router.get('/details', auth.verify, (req, res) => {
+	const userData = auth.decode(req.headers.authorization);
+	userController.getProfile({user Id: userData.id}).then(resultFromController => res.send(resultFromController))
 })
 
 module.exports = router;

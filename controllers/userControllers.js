@@ -102,7 +102,6 @@ module.exports.loginUser = (reqBody) => {
 module.exports.getProfile = (data) => {
   return User.findById(data.userId).then(result => {
       result.password = " ";
-
       return result;
   });
 };
